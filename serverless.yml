@@ -1,0 +1,17 @@
+service: sls-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+plugins:
+  - serverless-offline
+
+functions:
+  users:
+    handler: index.handler
+    events:
+      - http: 
+          path: test
+          method: GET
