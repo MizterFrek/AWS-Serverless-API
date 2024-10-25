@@ -1,0 +1,7 @@
+{
+    "database_host": "localhost",
+  "database_user": "root",
+  "database_password": "password",
+  "database_port": "3306",
+  "database_name": "db_sls"
+}

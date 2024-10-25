@@ -1,7 +1,6 @@
 const axios = require('axios').default;
-const { CONTENT_TYPE } = require('../const');
 
-async function request(method, url, data = null) {
+const request = async (method, url, data = null) => {
   try {
     const config = {
       method,
@@ -21,11 +20,11 @@ async function request(method, url, data = null) {
   }
 }
 
-async function get(url) {
+const get = async (url) => {
   return await request('get', url);
 }
 
-async function post(url, data) {
+const post = async (url, data) => {
   return await request('post', url, data);
 }
 

@@ -1,12 +1,10 @@
-const { apiUrl } = require('../const');
-
 const 
   http = require('../plugins/http.adapter'),
   res = require('../plugins/response.adapter'),
   dictionary = require('../dictionaries')
 ;
 
-const handler = async (event, context) => {
+const handler = async (_, __) => {
 
   const url = `${apiUrl}/planets`; 
 
