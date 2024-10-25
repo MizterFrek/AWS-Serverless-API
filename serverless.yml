@@ -9,9 +9,15 @@ plugins:
   - serverless-offline
 
 functions:
-  index:
-    handler: index.handler
+  indexPlanetas:
+    handler: index.allPlanets
     events:
       - http: 
-          path: test
+          path: planetas
+          method: GET
+  showPlaneta:
+    handler: index.showPlanet
+    events:
+      - http: 
+          path: planetas/{id}
           method: GET

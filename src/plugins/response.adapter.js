@@ -30,7 +30,8 @@ const created = (data) => {
 const error = (message) => {
   return createResponse(config.HTTP_INTERNAL_SERVER_ERROR, { 
     status: config.HTTP_INTERNAL_SERVER_ERROR,  
-    message: message || config.MSG_500
+    message: message || config.MSG_500,
+    data: null,
   });
 }
   
