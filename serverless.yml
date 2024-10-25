@@ -9,7 +9,7 @@ plugins:
   - serverless-offline
 
 functions:
-  users:
+  index:
     handler: index.handler
     events:
       - http: 
