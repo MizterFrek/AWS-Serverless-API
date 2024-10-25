@@ -1,6 +1,6 @@
 const 
-  http = require('../plugins/http.adapter'),
-  res = require('../plugins/response.adapter'),
+  http = require('../plugins/http'),
+  res = require('../plugins/response'),
   dictionary = require('../dictionaries')
 ;
 
