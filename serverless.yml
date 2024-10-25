@@ -5,17 +5,18 @@ provider:
   name: aws
   runtime: nodejs18.x
 
+
 plugins:
   - serverless-offline
 
 functions:
-  indexPlanetas:
+  indexPlanets:
     handler: index.allPlanets
     events:
       - http: 
           path: planetas
           method: GET
-  showPlaneta:
+  showPlanet:
     handler: index.showPlanet
     events:
       - http: 
