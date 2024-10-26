@@ -12,8 +12,18 @@ const isInvalid = (value) => {
   return (value === null || value === undefined || value === '')
 }
 
+/**
+ * Not available for localhost
+ * Pending mapping of http:// and /dev/ prefix
+ */
+const setDomain = (event) => {
+  const host = event.headers.Host;
+  global.dominio = `https://${host}`;
+}
+
 module.exports = {
   replaceLink,
   getFormatDate,
   isInvalid,
+  setDomain,
 }

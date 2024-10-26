@@ -1,11 +1,14 @@
 const 
   http = require('../../../plugins/http'),
   res = require('../../../plugins/response'),
-  dictionary = require('../dictionaries')
+  dictionary = require('../dictionaries'),
+  utils = require('../../../config/utils')
 ;
 
 const handler = async (event, _) => {
-  
+    
+  utils.setDomain(event);
+
   const page = event.queryStringParameters?.page || 1;
   
   const path = event.path

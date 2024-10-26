@@ -2,10 +2,13 @@ const
   http = require('../../../plugins/http'),
   res = require('../../../plugins/response'),
   dictionary = require('../dictionaries')
+  utils = require('../../../config/utils')
 ;
 
 const handler = async (event, _) => {
   
+  utils.setDomain(event);
+
   const ID = event.pathParameters.id;
   
   const path = event.path;

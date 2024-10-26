@@ -2,9 +2,6 @@
 
 global.developer = 'MizterFrek';
 
-//TO FIX
-global.dominio = 'http://localhost:3000/dev'
-
 global.CONTENT_TYPE = 'application/json';
 
 /**
