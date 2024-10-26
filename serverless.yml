@@ -40,3 +40,9 @@ functions:
       - http:
           path: libros
           method: POST
+  makeMigrations:
+    handler: index.makeMigrations
+    events:
+      - http:
+          path: make-migrations
+          method: GET

@@ -31,7 +31,7 @@ const useSchema = async (schema = process.env.DB_NAME) => {
   await connection.query(`USE \`${schema}\`;`);
 }
 
-const runQuery = async (query, schema = process.env.DB_NAME) => {
+const runQuery = async (query) => {
   await connection.query(query);
 }
 
@@ -40,37 +40,10 @@ const execute = async (query, params) => {
   return data;
 }
 
-const createDatabaseIfNotExists = async (schema = process.env.DB_NAME) => {
-   
-  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${schema}\`;`);
-
-  console.log(`Base de datos '${schema}' creada o ya existe.`);
-};
-
-const createBooksTable = async () => {
-  
-  const query = `
-    CREATE TABLE IF NOT EXISTS books (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL UNIQUE,
-      author VARCHAR(255) NOT NULL,
-      published_at DATE,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
-  `;
-
-  await runQuery(query);
-
-  console.log("Tabla 'books' creada o ya existe.");
-};
-
 module.exports = {
   connectDB,
   endDB,
   useSchema,
   runQuery,
   execute,
-  createDatabaseIfNotExists,
-  createBooksTable,
 }
