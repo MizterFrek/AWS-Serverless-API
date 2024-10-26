@@ -24,6 +24,7 @@ class Book {
 
 const getAll = async () => {
     await mysql.connectDB();
+    await mysql.useSchema();
 
     const query = 'SELECT * FROM books';
 
@@ -38,6 +39,7 @@ const getAll = async () => {
 
 const createNew = async (name, author, published_at) => {
     await mysql.connectDB();
+    await mysql.useSchema();
 
     const timestamp = new Date;
 

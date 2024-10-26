@@ -13,7 +13,7 @@ const ok = (data) => {
   return createResponse(HTTP_OK, { 
     codigo: HTTP_OK,  
     mensaje: MSG_200,
-    datos
+    datos: data
   })
 }
 
@@ -21,7 +21,7 @@ const created = (data) => {
   return createResponse(HTTP_CREATED, { 
     codigo: HTTP_CREATED,  
     mensaje: MSG_201,
-    datos
+    datos: data
   })
 }
 
@@ -29,7 +29,7 @@ const validationError = (message, errors = []) => {
   return createResponse(HTTP_VALIDATION_ERROR, { 
     codigo: HTTP_VALIDATION_ERROR,  
     mensaje: message || MSG_422,
-    errores,
+    errores: errors,
   });
 }
 

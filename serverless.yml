@@ -4,6 +4,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
+  region: us-east-1
   environment:
     DB_HOST: ${file(database.json):database_host}
     DB_USER: ${file(database.json):database_user}
@@ -17,6 +18,7 @@ provider:
         Action:
           - "rds:DescribeDBInstances"
           - "rds:Connect"
+          - "rds-db:connect"
         Resource: "*"
 
 plugins:
@@ -37,12 +39,14 @@ functions:
           method: GET
   listBooks:
     handler: index.listBooks
+    timeout: 30
     events:
       - http:
           path: libros
           method: GET
   createBook:
     handler: index.createBook
+    timeout: 30
     events:
       - http:
           path: libros
@@ -50,7 +54,16 @@ functions:
   makeMigrations:
     handler: index.makeMigrations
     timeout: 30
-
+    vpc:
+      securityGroupIds:
+        - vpc-083fdf93440a2956e
+      subnetIds:
+        - subnet-0f048cddc137bc4f5
+        - subnet-0af9538a6061fc531
+        - subnet-06c9e0643a00fd77f
+        - subnet-0f77775861707dbe0
+        - subnet-00e74b567d922f27b
+        - subnet-01c863cede25593f9
 custom:
   scriptHooks:
-    after:deploy:deploy: sls invoke -f makeMigrations
+    after:deploy:finalize: sls invoke -f makeMigrations

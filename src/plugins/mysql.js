@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-const connectDB = async (schema = process.env.DB_NAME) => { 
+const connectDB = async () => { 
   if (!(global.connection || null)) {
     try {
       global.connection = await mysql.createConnection({
@@ -8,9 +8,6 @@ const connectDB = async (schema = process.env.DB_NAME) => {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
       });
-  
-      await useSchema(schema);
-  
     } catch (error) {
       console.log({message: "Error de conexión a MySQL", error})
       throw(error)

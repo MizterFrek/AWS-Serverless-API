@@ -78,7 +78,9 @@ const _unique = async (value = null, attr, table, column, msg = INVALID_UNIQUE) 
     }
 
     try {
-        await mysql.connectDB();    
+        await mysql.connectDB();  
+        
+        await mysql.useSchema();  
 
         let query = `SELECT COUNT(*) AS count FROM \`${table}\` WHERE \`${column}\` = ?`;
 

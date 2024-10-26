@@ -5,11 +5,14 @@ const
 
 const handler = async (_, __) => {
   
-  const users = await userModel.getAll();
+  try {
+    const users = await userModel.getAll();
 
-  response = res.ok(users.map(user => user.toResponse() ))
+    return res.ok(users.map(user => user.toResponse()))
+  } catch(error) {
+    return res.error(MSG_500,error.message)
+  }
 
-  return response;
 }
 
 module.exports = handler;

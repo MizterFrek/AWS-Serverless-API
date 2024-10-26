@@ -1,7 +1,18 @@
 {
-    "database_host": "localhost",
+  "database_host": "localhost",
   "database_user": "root",
   "database_password": "password",
   "database_port": "3306",
   "database_name": "db_sls"
 }
+
+// {
+//   "database_host": "sls-db.c3g6gi4g623r.us-east-1.rds.amazonaws.com",
+//   "database_user": "mizterfrek",
+//   "database_password": "RgmMGgIkHMlCqaEMyyUg",
+//   "database_port": "3306",
+//   "database_name": "sls-db",
+
+//   "vpc_id": "vpc-083fdf93440a2956e",
+//   "security_group_id": "sg-0ff50e6b559f344d2"
+// }

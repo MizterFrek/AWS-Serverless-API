@@ -79,10 +79,11 @@ const seedBooksTable = async () => {
 }
 
 const runMigration = async () => {
-    
+    console.log('REALIZANDO MIGRACIONES');
     try {
         await mysql.connectDB();
         await createDatabaseIfNotExists();
+        await mysql.useSchema();
         await createBooksTable();
         if(await checkTableDontExists()) {
             await seedBooksTable();
