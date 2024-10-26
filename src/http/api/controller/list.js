@@ -5,8 +5,6 @@ const
 ;
 
 const handler = async (event, _) => {
-
-  console.log(event);
   
   const page = event.queryStringParameters?.page || 1;
   
