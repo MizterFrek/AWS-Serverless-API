@@ -47,15 +47,14 @@ const createDatabaseIfNotExists = async (schema = process.env.DB_NAME) => {
   console.log(`Base de datos '${schema}' creada o ya existe.`);
 };
 
-const createUsersTable = async () => {
+const createBooksTable = async () => {
   
   const query = `
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS books (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) NOT NULL UNIQUE,
-      password VARCHAR(255) NOT NULL,
-      dni VARCHAR(20) UNIQUE,
+      name VARCHAR(255) NOT NULL UNIQUE,
+      author VARCHAR(255) NOT NULL,
+      published_at DATE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
@@ -63,7 +62,7 @@ const createUsersTable = async () => {
 
   await runQuery(query);
 
-  console.log("Tabla 'users' creada o ya existe.");
+  console.log("Tabla 'books' creada o ya existe.");
 };
 
 module.exports = {
@@ -73,5 +72,5 @@ module.exports = {
   runQuery,
   execute,
   createDatabaseIfNotExists,
-  createUsersTable,
+  createBooksTable,
 }

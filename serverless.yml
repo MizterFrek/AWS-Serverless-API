@@ -28,15 +28,15 @@ functions:
       - http: 
           path: planetas/{id}
           method: GET
-  listUsers:
-    handler: index.listUsers
+  listBooks:
+    handler: index.listBooks
     events:
       - http:
-          path: usuarios
+          path: libros
           method: GET
-  createUser:
-    handler: index.createUser
+  createBook:
+    handler: index.createBook
     events:
       - http:
-          path: usuarios
+          path: libros
           method: POST

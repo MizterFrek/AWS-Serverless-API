@@ -5,6 +5,11 @@ const replaceLink = (url, replace) => {
     ;
 }
 
+const getFormatDate = (date) => {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+}
+
 module.exports = {
   replaceLink,
+  getFormatDate,
 }
