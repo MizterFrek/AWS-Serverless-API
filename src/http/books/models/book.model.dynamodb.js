@@ -35,8 +35,6 @@ const getAll = async () => {
 
         const data = await dynamodb.scanTable(config);
 
-        console.log(data);
-
         const books = data.Items.map(book => new Book(book));
         return books;
     } catch (error) {

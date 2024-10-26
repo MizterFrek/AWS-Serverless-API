@@ -41,14 +41,33 @@ const scanTable = async (config) => {
     const command = new ScanCommand(config);
   
     const response = await docClient.send(command);
+    
 
     return response;
 };
+
+const searchOnColumn = async (TableName, column, value) => {
+
+    const config = {
+        TableName: TableName,
+        ProjectionExpression: `#${column}`,
+        FilterExpression: `#${column} = :${column}`,
+        ExpressionAttributeNames: { [`#${column}`]: column },
+        ExpressionAttributeValues: { [`:${column}`]: value },    
+    };
+
+    const command = new ScanCommand(config);
+
+    const data = await docClient.send(command);
+
+    return data;
+}
 
 module.exports = {
     initDynamoDB,
     createRow,
     scanTable,
+    searchOnColumn,
 }
 
 

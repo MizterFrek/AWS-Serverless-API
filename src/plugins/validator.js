@@ -1,4 +1,4 @@
-const mysql = require('../plugins/mysql');
+const dynamodb = require('../plugins/dynamodb');
 const utils = require('../config/utils');
 
 const _isRequired = (value = null, attr, msg = INVALID_REQUIRED) => {
@@ -72,45 +72,33 @@ const _date = (value, attr, msg = INVALID_DATE_FORMAT) => {
 }
 
 const _unique = async (value = null, attr, table, column, msg = INVALID_UNIQUE) => {
-    
+
     if (utils.isInvalid(value)) {
         return 
     }
 
     try {
-        await mysql.connectDB();  
-        
-        await mysql.useSchema();  
+        dynamodb.initDynamoDB();
 
-        let query = `SELECT COUNT(*) AS count FROM \`${table}\` WHERE \`${column}\` = ?`;
+        const data = await dynamodb.searchOnColumn(table, column, value);
 
-        const params = [value];
-    
-        await mysql.execute(query, params).then( ([data]) => {
-            const count = [data[0].count];
+        const validation = (data.Count > 0);
 
-            const validation = (count > 0);
-
-            if (validation) {
-                pushValidationError(attr + 'Unique', msg.replace(':attr', attr));
-
-            }
-        });
+        if (validation) {
+            pushValidationError(attr + 'Unique', msg.replace(':attr', attr));
+        }
 
     } catch (error) {
 
         console.error("Error en la consulta _unique:", error);
         return error;
 
-    } finally {
-        mysql.endDB();
-    }
+    } 
 }
 
 const pushValidationError = (attr, msg) => {
     validation_errors[attr] = msg;
-    validation_fails = true;
-    
+    validation_fails = true;  
 }
 
 module.exports = {
@@ -123,3 +111,41 @@ module.exports = {
     _unique,
     pushValidationError,
 }
+
+/** Previous _unique validation version with Mysql */
+// const mysql = require('../plugins/mysql');
+// const _unique = async (value = null, attr, table, column, msg = INVALID_UNIQUE) => {
+    
+//     if (utils.isInvalid(value)) {
+//         return 
+//     }
+
+//     try {
+//         await mysql.connectDB();  
+        
+//         await mysql.useSchema();  
+
+//         let query = `SELECT COUNT(*) AS count FROM \`${table}\` WHERE \`${column}\` = ?`;
+
+//         const params = [value];
+    
+//         await mysql.execute(query, params).then( ([data]) => {
+//             const count = [data[0].count];
+
+//             const validation = (count > 0);
+
+//             if (validation) {
+//                 pushValidationError(attr + 'Unique', msg.replace(':attr', attr));
+
+//             }
+//         });
+
+//     } catch (error) {
+
+//         console.error("Error en la consulta _unique:", error);
+//         return error;
+
+//     } finally {
+//         mysql.endDB();
+//     }
+// }

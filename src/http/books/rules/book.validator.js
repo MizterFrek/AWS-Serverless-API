@@ -28,9 +28,9 @@ const validate = async (bodyRequest) => {
     try {
         validator._maxLengthString(nombre, 255, 'nombre');
     } catch(error) {}
-    // try {
-    //     await validator._unique(nombre, 'nombre', 'books', 'name'); 
-    // } catch(error) { console.log("Falló la regla unique de nombre") }
+    try {
+        await validator._unique(nombre, 'nombre', 'BooksTable', 'name'); 
+    } catch(error) { console.log("Falló la regla unique de nombre") }
 
     // Validaciones para author
     try {

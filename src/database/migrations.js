@@ -1,3 +1,4 @@
+/** Este archivo ya no se utiliza */
 const mysql = require('../plugins/mysql');
 const res = require('../plugins/response');
 
