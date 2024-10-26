@@ -1,17 +1,21 @@
-service: sls-project
+service: ${file(env-${self:provider.stage}.json):project_name}
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    API_URL: ${file(env-${self:provider.stage}.json):external_api_url}
   iam:
     role:
       statements:
       - Effect: "Allow"
         Action:
           - dynamodb:*
-        Resource: "*"
+        Resource: 
+          - ${file(env-${self:provider.stage}.json):dynamo_db_arn}
 
 plugins:
   - serverless-offline
@@ -45,10 +49,10 @@ functions:
           method: POST
 resources:
   Resources:
-    BooksTable:
+    DynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: BooksTable
+        TableName: ${file(env-${self:provider.stage}.json):datatable_name}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id

@@ -2,8 +2,6 @@
 
 global.developer = 'MizterFrek';
 
-global.apiUrl = 'https://swapi.py4e.com/api';
-
 //TO FIX
 global.dominio = 'http://localhost:3000/dev'
 

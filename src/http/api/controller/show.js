@@ -11,7 +11,7 @@ const handler = async (event, _) => {
   const path = event.path;
   const model = "/planets";
 
-  const url = `${apiUrl}${model}/${ID}`; 
+  const url = `${process.env.API_URL}${model}/${ID}`; 
   let data;
   try {
     data = await http.get(url);

@@ -1,6 +1,6 @@
 const replaceLink = (url, replace) => {
   return typeof url == 'string' 
-    ? String(url).replace(apiUrl, dominio).replace(replace[0], replace[1]) 
+    ? String(url).replace(process.env.API_URL, dominio).replace(replace[0], replace[1]) 
     : null;
 }
 
