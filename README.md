@@ -1,106 +1,80 @@
-<!--
-title: 'Serverless Framework Node Express API on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Node Express API running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Serverless Framework | Node | AWS | DynamoDB
 
-# Serverless Framework Node Express API on AWS
+Este proyecto implementa una arquitectura de API utilizando **AWS Lambda** y **Amazon API Gateway** para gestionar solicitudes de usuarios y manejar operaciones con bases de datos y APIs externas.
 
-This template demonstrates how to develop and deploy a simple Node Express API service running on AWS Lambda using the traditional Serverless Framework.
+## Despliegue
 
-## Anatomy of the template
-
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to the `httpApi` event. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the event is configured in a way to accept all incoming requests, `express` framework is responsible for routing and handling requests internally. Implementation takes advantage of `serverless-http` package, which allows you to wrap existing `express` applications. To learn more about `serverless-http`, please refer to corresponding [GitHub repository](https://github.com/dougmoscrop/serverless-http).
-
-## Usage
-
-### Deployment
-
-Install dependencies with:
+Instalar las dependencias con:
 
 ```
 npm install
 ```
 
-and then deploy with:
+y luego hacer el despliegue con:
 
 ```
 serverless deploy
 ```
 
-After running deploy, you should see output similar to:
+Luego de desplegar el proyecto se puede agregar el ARN del DynamoDB creado en la variable de entorno `dynamo_db_arn` para mejorar la seguridad de la aplicación.
 
-```bash
-Deploying aws-node-express-api-project to stage dev (us-east-1)
-
-✔ Service deployed to stack aws-node-express-api-project-dev (196s)
-
-endpoint: ANY - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
-functions:
-  api: aws-node-express-api-project-dev-api (766 kB)
+```json
+// Archivo env-stage.json
+{
+  "project_name":     "project_name",
+  "external_api_url": "https://api.com",
+  "dynamo_db_arn":    "*",// <--- Cambiar aquí
+  "datatable_name":   "dybamo_table"
+}
 ```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/).
+## URLS
 
-### Invocation
+| Función            | Método | Ruta               | Descripción                                                              | Observaciones                             |
+|--------------------|--------|--------------------|--------------------------------------------------------------------------|-------------------------------------------|
+| Listar Planetas    | GET    | `/planetas`        | Consume la API Starwars y trae la relacion de planetas.                  | Solo traduce las rutas de paginación      |
+| Mostrar Planeta    | GET    | `/planetas/{id}`   | Consume la API Starwars y muestra la información del planeta específico. | Ninguna                                   |
+| Listar Libros      | GET    | `/libros`          | Lista los libros creados por el usuario.                                 | Ninguna                                   |
+| Crear Libro        | POST   | `/libros`          | Crea un nuevo libro con la información proporcionada por el usuario.     | Aplica validación de datos                |
 
-After successful deployment, you can call the created application via HTTP:
+## Funcionalidad General
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
-```
+- **API Gateway**: Actúa como punto de entrada para las solicitudes de los usuarios y dirige las peticiones a las funciones Lambda correspondientes.
+- **Lambda POST** y **Lambda GET**: Ejecutan la lógica para interactuar con las bases de datos o para consumir la API externa.
+- **DynamoDB**: Almacena la información procesada.
+- **API Externa**: El proyecto actua como intermediario de la [API de Star Wars](https://swapi.py4e.com/documentation) leyendo la información de planetas y devolviendo una estructura en español.
 
-Which should result in the following response:
 
-```
-{"message":"Hello from root!"}
-```
+## Diagrama de Arquitectura
 
-Calling the `/hello` path with:
+A continuación se muestra un diagrama que ilustra la arquitectura del proyecto:
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/hello
-```
+![Diagrama de Arquitectura](https://mizterfrek.com/img/serverless-app.png)
 
-Should result in the following response:
+---
 
-```bash
-{"message":"Hello from path!"}
-```
+## Configuraciones adicionales
 
-If you try to invoke a path or method that does not have a configured handler, e.g. with:
+### Configuración de Variables de Entorno
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/nonexistent
-```
+Este proyecto utiliza un archivo JSON para gestionar las variables de entorno, lo cual permite un manejo flexible de configuraciones según el stage o entorno en el que se despliegue la aplicación (desarrollo, producción, etc.).
 
-You should receive the following response:
+### Nombre del archivo .JSON
 
-```bash
-{"error":"Not Found"}
-```
+Es fundamental que el archivo de variables de entorno tenga un nombre específico que incluya el sufijo del stage de la aplicación. De esta manera, el proyecto puede identificar y utilizar el archivo de configuración adecuado. A continuación se muestran ejemplos de nombres de archivo según el stage:
 
-### Local development
+- **Entorno de desarrollo (dev)**: `env-dev.json`
+- **Entorno de producción (prod)**: `env-prod.json`
 
-It is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
+### Stage Predeterminado
 
-```bash
-serverless plugin install -n serverless-offline
-```
+El stage predeterminado de la aplicación es `dev`, por lo que el proyecto incluye el archivo `env-dev.json` con las configuraciones básicas para un despliegue rápido y sencillo. Esto permite que la aplicación pueda iniciarse en un entorno de desarrollo sin necesidad de configuraciones adicionales.
 
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
+## Configuración de Otros Stages
 
-After installation, you can start local emulation with:
+Para configurar otros stages, basta con crear un archivo JSON siguiendo el formato `env-<stage>.json`, donde `<stage>` representa el nombre del entorno deseado (por ejemplo, `test` para testing).
 
-```
-serverless offline
-```
 
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
+---
+
+
