@@ -23,18 +23,26 @@ class Book {
 }
 
 const getAll = async () => {
-    // await mysql.connectDB();
-    // await mysql.useSchema();
+    dynamodb.initDynamoDB()
 
-    const query = 'SELECT * FROM books';
+    try {
 
-    // const [data] = await mysql.execute(query);
+        const config = {
+            ProjectionExpression: 'id, #name, author, published_at, created_at, updated_at',
+            ExpressionAttributeNames: { "#name": "name" },
+            TableName: 'BooksTable',
+        };
 
-    const books = data.map(book => new Book(book));
+        const data = await dynamodb.scanTable(config);
 
-    // await mysql.endDB();
+        console.log(data);
 
-    return books;
+        const books = data.Items.map(book => new Book(book));
+        return books;
+    } catch (error) {
+        console.error('Error al listar la tabla BooksTable:', error);
+        throw error;
+    }
 }
 
 const createNew = async (name, author, published_at) => {

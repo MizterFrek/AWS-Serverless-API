@@ -9,7 +9,7 @@ const getFormatDate = (date) => {
 }
 
 const isInvalid = (value) => {
-  return (value === null || value === undefined || value === '' || value.trim() === '')
+  return (value === null || value === undefined || value === '')
 }
 
 module.exports = {

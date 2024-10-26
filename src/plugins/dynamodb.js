@@ -1,7 +1,7 @@
 const uuid = require('./uuid');
 
 const { DynamoDBClient } = require ("@aws-sdk/client-dynamodb");
-const { PutCommand, DynamoDBDocumentClient } = require ("@aws-sdk/lib-dynamodb");
+const { ScanCommand, PutCommand, DynamoDBDocumentClient } = require ("@aws-sdk/lib-dynamodb");
 
 const initDynamoDB = async () => { 
     if (!(global.connection || null)) {
@@ -36,9 +36,19 @@ const createRow = async (TableName, data) => {
     return response;
 }
 
+const scanTable = async (config) => {
+    
+    const command = new ScanCommand(config);
+  
+    const response = await docClient.send(command);
+
+    return response;
+};
+
 module.exports = {
     initDynamoDB,
     createRow,
+    scanTable,
 }
 
 

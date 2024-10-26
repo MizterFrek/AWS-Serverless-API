@@ -1,14 +1,14 @@
 const 
   res = require('../../../plugins/response'),
-  userModel = require('../models/book.model.dynamodb')
+  bookModel = require('../models/book.model.dynamodb')
 ;
 
 const handler = async (_, __) => {
   
   try {
-    const users = await userModel.getAll();
+    const books = await bookModel.getAll();
 
-    return res.ok(users.map(user => user.toResponse()))
+    return res.ok(books.map(book => book.toResponse()))
   } catch(error) {
     return res.error(MSG_500,error.message)
   }
