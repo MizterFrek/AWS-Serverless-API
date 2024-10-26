@@ -1,13 +1,12 @@
 const 
   res = require('../../../plugins/response'),
+  bookModel = require('../models/book.model.dynamodb'),
   bookValidator = require('../rules/book.validator')
 ;
 
-const bookModel = require('../models/book.model');
-
 const handler = async (event, _) => {
 
-  await bookValidator(event.body);
+  await bookValidator.validate(event.body);
 
   if (validation_fails) {
     return res.validationError(validation_message, validation_errors);
@@ -15,9 +14,9 @@ const handler = async (event, _) => {
 
   const { nombre, autor, fechaPublicacion } = JSON.parse(event.body);
 
-  const book = await bookModel.createNew(nombre, autor, fechaPublicacion);
+  await bookModel.createNew(nombre, autor, fechaPublicacion);
 
-  return res.created(book.toResponse());
+  return res.created();
 }
 
 module.exports = handler;

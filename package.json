@@ -1,11 +1,10 @@
 {
-  "name": "sls-express",
-  "version": "1.0.0",
-  "description": "",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.679.0",
     "axios": "^1.7.7",
     "mysql2": "^3.11.3",
-    "serverless-http": "^3.1.1"
+    "serverless-http": "^3.1.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "serverless-offline": "^14.3.3"

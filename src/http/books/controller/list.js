@@ -1,6 +1,6 @@
 const 
   res = require('../../../plugins/response'),
-  userModel = require('../models/book.model')
+  userModel = require('../models/book.model.dynamodb')
 ;
 
 const handler = async (_, __) => {

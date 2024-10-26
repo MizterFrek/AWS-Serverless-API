@@ -1,6 +1,6 @@
 const validator = require('../../../plugins/validator');
 
-const bookValidator = async (bodyRequest) => {
+const validate = async (bodyRequest) => {
     global.validation_fails = false;
     global.validation_errors = {};
     global.validation_message = MSG_422;
@@ -28,9 +28,9 @@ const bookValidator = async (bodyRequest) => {
     try {
         validator._maxLengthString(nombre, 255, 'nombre');
     } catch(error) {}
-    try {
-        await validator._unique(nombre, 'nombre', 'books', 'name'); 
-    } catch(error) { console.log("Falló la regla unique de nombre") }
+    // try {
+    //     await validator._unique(nombre, 'nombre', 'books', 'name'); 
+    // } catch(error) { console.log("Falló la regla unique de nombre") }
 
     // Validaciones para author
     try {
@@ -51,4 +51,6 @@ const bookValidator = async (bodyRequest) => {
     } catch(error) {}
 };
 
-module.exports = bookValidator;
+module.exports = {
+    validate
+};
