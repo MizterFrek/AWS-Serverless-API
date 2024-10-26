@@ -8,7 +8,6 @@ const handler = async (event, _) => {
   
   const ID = event.pathParameters.id;
   
-  console.log(event)
   const path = event.path;
   const model = "/planets";
 

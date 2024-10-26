@@ -1,11 +1,15 @@
 require('./src/config/constants');
 
-const allPlanets = require('./src/http/api/routes/list');
-const showPlanet = require('./src/http/api/routes/show');
+const listPlanets = require('./src/http/api/controller/list');
+const showPlanet = require('./src/http/api/controller/show');
+
+const listUsers = require('./src/http/users/controller/list');
 // const createUser = require('./src/http/users/routes/user.fn.create');
 
 module.exports = {
-  allPlanets,
+  listPlanets,
   showPlanet,
+  
+  listUsers,
   // createUser,
 };

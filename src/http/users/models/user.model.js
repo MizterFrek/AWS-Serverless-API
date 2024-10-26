@@ -1,15 +1,17 @@
+const mysql = require('../../../plugins/mysql');
+
 class User {
-    constructor(name, email, password, dni) {
-        this.id = null;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.dni = dni;
-        this.created_at = null;
-        this.updated_at = null;
+    constructor(user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+        this.password = user.password;
+        this.dni = user.dni;
+        this.created_at = user.created_at;
+        this.updated_at = user.updated_at;
     }
 
-    get() {
+    getApiResource() {
         return {
             id: this.id,
             nombre: this.name,
@@ -21,4 +23,21 @@ class User {
     }
 }
 
-module.exports = User
+const getAll = async () => {
+    await mysql.connectDB()
+
+    const query = 'SELECT * FROM users';
+
+    const [data] = await mysql.execute(query);
+
+    const users = data.map(user => new User(user))
+
+    return users;
+}
+
+
+
+module.exports = {
+    getAll,
+    User
+}

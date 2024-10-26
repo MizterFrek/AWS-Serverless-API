@@ -16,8 +16,8 @@ plugins:
   - serverless-offline
 
 functions:
-  indexPlanets:
-    handler: index.allPlanets
+  listPlanets:
+    handler: index.listPlanets
     events:
       - http: 
           path: planetas
@@ -28,9 +28,15 @@ functions:
       - http: 
           path: planetas/{id}
           method: GET
+  listUsers:
+    handler: index.listUsers
+    events:
+      - http:
+          path: usuarios
+          method: GET
   createUser:
     handler: index.createUser
     events:
       - http:
-          path: planetas
+          path: usuarios
           method: POST
