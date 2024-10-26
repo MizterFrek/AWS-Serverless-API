@@ -49,8 +49,6 @@ const bookValidator = async (bodyRequest) => {
     try {
         validator._date(fechaPublicacion, 'fechaPublicacion'); 
     } catch(error) {}
-
-    console.log(validation_errors)
 };
 
 module.exports = bookValidator;

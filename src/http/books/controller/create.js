@@ -13,12 +13,11 @@ const handler = async (event, _) => {
     return res.validationError(validation_message, validation_errors);
   }
 
+  const { nombre, autor, fechaPublicacion } = JSON.parse(event.body);
 
-  // const { name, author, published_at } = JSON.parse(event.body);
+  const book = await bookModel.createNew(nombre, autor, fechaPublicacion);
 
-  // const book = await bookModel.createNew(name, author, published_at);
-
-  // return res.created(book.toResponse());
+  return res.created(book.toResponse());
 }
 
 module.exports = handler;

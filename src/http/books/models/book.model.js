@@ -39,17 +39,17 @@ const getAll = async () => {
 const createNew = async (name, author, published_at) => {
     await mysql.connectDB();
 
-    const date = utils.getFormatDate(new Date);
+    const timestamp = new Date;
 
     const query = "INSERT INTO books (name,author,published_at,created_at,updated_at) VALUES (?,?,?,?,?)";
 
-    const [data] = await mysql.execute(query, [name,author,published_at, date, date]);
+    const [data] = await mysql.execute(query, [name,author,published_at,timestamp,timestamp]);
     
     await mysql.endDB();
     
     const id = data.insertId;
     
-    const book = new Book({id, name, author, published_at, created_at: date, updated_at: date});
+    const book = new Book({id, name, author, published_at, created_at: timestamp, updated_at: timestamp});
 
     return book;
 }
