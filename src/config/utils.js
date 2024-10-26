@@ -6,10 +6,15 @@ const replaceLink = (url, replace) => {
 }
 
 const getFormatDate = (date) => {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+  return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDay()}`;
+}
+
+const isInvalid = (value) => {
+  return (value === null || value === undefined || value === '' || value.trim() === '')
 }
 
 module.exports = {
   replaceLink,
   getFormatDate,
+  isInvalid,
 }

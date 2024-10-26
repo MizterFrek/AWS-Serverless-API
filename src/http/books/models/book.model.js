@@ -15,7 +15,7 @@ class Book {
             id: this.id,
             nombre: this.name,
             autor: this.author,
-            fechaPublicacion: this.published_at,
+            fechaPublicacion: utils.getFormatDate(new Date(this.published_at)),
             creadoEn: this.created_at,
             editadoEn: this.updated_at,
         }

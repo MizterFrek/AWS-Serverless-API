@@ -12,6 +12,7 @@ global.CONTENT_TYPE = 'application/json';
 /**
  * Regex
  */
+global.REGEX_DATE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 global.REGEX_EMAIL = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
 // ^                         Start anchor
@@ -49,4 +50,5 @@ global.INVALID_MAX_LENGTH = "El campo :attr debe tener un máximo de :max caract
 global.INVALID_MIN_LENGTH = "El campo :attr debe tener un mínimo de :min caracteres";
 global.INVALID_EMAIL = "El campo :attr debe ser un email válido";
 global.INVALID_UNIQUE = "El campo :attr ya existe";
-global.INVALID_PASSWORD ="El campo :attr es una contraseña insegura";
+global.INVALID_PASSWORD = "El campo :attr es una contraseña insegura";
+global.INVALID_DATE_FORMAT = "El campo :attr debe tener siguiente formato de fecha: YYYY-MM-DD"

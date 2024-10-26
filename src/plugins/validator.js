@@ -1,76 +1,82 @@
 const mysql = require('../plugins/mysql');
+const utils = require('../config/utils');
 
 const _isRequired = (value = null, attr, msg = INVALID_REQUIRED) => {
-
-    let validation = (value === null || value === undefined || value === '' || value.trim() === '') 
-        ? msg.replace(':attr', attr)
-        : false
-    ;
-
-    pushValidationError(attr, validation);
-
-    return validation;
+    const validation = utils.isInvalid(value);
+    
+    if (validation)  {
+        pushValidationError(attr + 'Required', msg.replace(':attr', attr))
+    }
 }
 
 const _isNumber = (value = null, attr, msg = INVALID_NUMBER)  => {
     
-    let validation = (isNaN(parseFloat(Number(value)))) 
-        ? msg.replace(':attr', attr)
-        : false
-    ;
+    let validation = isNaN(parseFloat(Number(value)))
 
-    pushValidationError(attr, validation);
-
-    return validation;
+    if (validation) {
+        pushValidationError(attr + 'Number', msg.replace(':attr', attr))
+    }
 }
 
 const _numberLength = (value = null, lng, attr, msg = INVALID_NUMBER_LENGTH) => {
-    let validation = (typeof value !== 'number' || Number(value).toString().length === lng)
-        ? msg.replace(':lng', lng)
-        : msg.replace(':attr', attr)
-    ;
-    pushValidationError(attr, validation);
+    
+    let validation = (typeof value !== 'number' || Number(value).toString().length === lng);
 
-    return validation;
+    if (validation) {
+        pushValidationError(attr + 'NumberLength', msg.replace(':lng', lng).replace(':attr', attr));
+    }
 }
 
-const _maxLengthString = (value = null, max, attr, msg = INVALID_MAX_LENGTH) => {
-    let validation = false;
+const _maxLengthString = (value, max, attr, msg = INVALID_MAX_LENGTH) => {
+    
+    value = value ?? '';
 
-    if (String(value).trim().length > max) {
-        msg.replace(':max', max);
-        validation = msg.replace(':attr', attr);
+    const validation = String(value).trim().length > max;
+
+    if (validation) {
+        pushValidationError(attr + 'MaxLengthString', msg.replace(':attr', attr).replace(':max', max));
     } 
-    
-    pushValidationError(attr, validation);
-    
-    return validation;
 }
 
-const _minLengthString = (value = '', min, attr, msg = INVALID_MIN_LENGTH) => {
-    let validation = false;
+const _minLengthString = (value, min, attr, msg = INVALID_MIN_LENGTH) => {
+    
+    value = value ?? '';
 
-    if (String(value).trim().length < min) {
-        msg.replace(':min', min);
-        validation = msg.replace(':attr', attr);
+    const validation = String(value).trim().length < min;
+    
+    if (validation) {
+        pushValidationError(attr + 'MinLengthString', msg.replace(':min', min).replace(':attr', attr))
+    }
+}
+
+const _date = (value, attr, msg = INVALID_DATE_FORMAT) => {
+
+    value = value ?? '';
+    
+    if (!REGEX_DATE.test(value)) {
+        pushValidationError(attr + 'DateFormat', msg.replace(':attr', attr));
+        return 
     }
 
-    return validation;
-}
+    const [year, month, day] = value.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
 
-const _email = (value = '', attr, msg = INVALID_EMAIL) => {
-    let validation = (!value.match(REGEX_EMAIL)) 
-        ? msg.replace(':attr', attr)
-        : false
-    ;
-
-    pushValidationError(attr, validation);
-
-    return validation;
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month - 1 ||
+        date.getDate() !== day
+    ) {
+        pushValidationError(attr + 'DateFormat', msg.replace(':attr', attr));
+        return 
+    }
 }
 
 const _unique = async (value = null, attr, table, column, msg = INVALID_UNIQUE) => {
     
+    if (utils.isInvalid(value)) {
+        return 
+    }
+
     try {
         await mysql.connectDB();    
 
@@ -80,44 +86,29 @@ const _unique = async (value = null, attr, table, column, msg = INVALID_UNIQUE) 
     
         await mysql.execute(query, params).then( ([data]) => {
             const count = [data[0].count];
-            let validation = (count > 0)
-                ? msg.replace(':attr', attr)
-                : false
-            ;
 
-            pushValidationError(attr, validation);
+            const validation = (count > 0);
 
-            return validation;
+            if (validation) {
+                pushValidationError(attr + 'Unique', msg.replace(':attr', attr));
+
+            }
         });
 
     } catch (error) {
 
         console.error("Error en la consulta _unique:", error);
-        throw new Error(error);
+        return error;
 
     } finally {
         mysql.endDB();
     }
 }
 
-const _securePassword = (value = '', attr, msg = INVALID_PASSWORD) => {
-    let validation = (!value.match(REGEX_SECURE_PASSWORD)) 
-        ? msg.replace(':attr', attr)
-        : false
-    ;                 
+const pushValidationError = (attr, msg) => {
+    validation_errors[attr] = msg;
+    validation_fails = true;
     
-    pushValidationError(attr, validation);
-
-    return validation;
-}
-
-
-const pushValidationError = (attr, validation) => {
-    if (!validation) {
-        validation_errors[attr] = validation;
-
-        validation_fails = true;
-    }
 }
 
 module.exports = {
@@ -126,8 +117,7 @@ module.exports = {
     _numberLength,
     _maxLengthString,
     _minLengthString,
-    _email,
+    _date,
     _unique,
-    _securePassword,
     pushValidationError,
 }
