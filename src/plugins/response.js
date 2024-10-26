@@ -11,34 +11,34 @@ const createResponse =(statusCode, body, headers = {}) => {
 
 const ok = (data) => {
   return createResponse(HTTP_OK, { 
-    status: HTTP_OK,  
-    message: MSG_200,
-    data
+    codigo: HTTP_OK,  
+    mensaje: MSG_200,
+    datos
   })
 }
 
 const created = (data) => {
   return createResponse(HTTP_CREATED, { 
-    status: HTTP_CREATED,  
-    message: MSG_201,
-    data
+    codigo: HTTP_CREATED,  
+    mensaje: MSG_201,
+    datos
   })
 }
 
 const validationError = (message, errors = []) => {
   return createResponse(HTTP_VALIDATION_ERROR, { 
-    status: HTTP_VALIDATION_ERROR,  
-    message: message || MSG_422,
-    errors,
+    codigo: HTTP_VALIDATION_ERROR,  
+    mensaje: message || MSG_422,
+    errores,
   });
 }
 
 const error = (message, errors = []) => {
   console.log('errores', errors)
   return createResponse(HTTP_INTERNAL_SERVER_ERROR, { 
-    status: HTTP_INTERNAL_SERVER_ERROR,  
-    message: message || MSG_500,
-    errors: errors.length ? JSON.stringify(errors) : [],
+    codigo: HTTP_INTERNAL_SERVER_ERROR,  
+    mensaje: message || MSG_500,
+    errores: errors.length ? JSON.stringify(errors) : [],
   });
 }
   

@@ -3,7 +3,6 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  stage: ${opt:stage, 'dev'}
   runtime: nodejs18.x
   environment:
     DB_HOST: ${file(database.json):database_host}
@@ -11,6 +10,14 @@ provider:
     DB_PASSWORD: ${file(database.json):database_password}
     DB_PORT: ${file(database.json):database_port}
     DB_NAME: ${file(database.json):database_name}
+  iam:
+    role:
+      statements:
+      - Effect: "Allow"
+        Action:
+          - "rds:DescribeDBInstances"
+          - "rds:Connect"
+        Resource: "*"
 
 plugins:
   - serverless-offline
@@ -42,7 +49,8 @@ functions:
           method: POST
   makeMigrations:
     handler: index.makeMigrations
-    events:
-      - http:
-          path: make-migrations
-          method: GET
+    timeout: 30
+
+custom:
+  scriptHooks:
+    after:deploy:deploy: sls invoke -f makeMigrations
