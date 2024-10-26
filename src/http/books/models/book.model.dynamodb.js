@@ -22,7 +22,7 @@ class Book {
     }
 }
 
-const getAll = async () => {
+const getAll = async (TableName = process.env.DB_TABLE) => {
     dynamodb.initDynamoDB()
 
     try {
@@ -30,7 +30,7 @@ const getAll = async () => {
         const config = {
             ProjectionExpression: 'id, #name, author, published_at, created_at, updated_at',
             ExpressionAttributeNames: { "#name": "name" },
-            TableName: 'BooksTable',
+            TableName,
         };
 
         const data = await dynamodb.scanTable(config);
@@ -38,18 +38,18 @@ const getAll = async () => {
         const books = data.Items.map(book => new Book(book));
         return books;
     } catch (error) {
-        console.error('Error al listar la tabla BooksTable:', error);
+        console.error(`Error al listar la tabla ${TableName}:`, error);
         throw error;
     }
 }
 
-const createNew = async (name, author, published_at) => {
+const createNew = async (data, TableName = process.env.DB_TABLE) => {
     
     dynamodb.initDynamoDB()
 
     try {
-        const data = await dynamodb.createRow('BooksTable', { name, author, published_at });
-        return data;
+        const response = await dynamodb.createRow(data, TableName);
+        return response;
     } catch (error) {
         console.error('Error al crear el registro:', error);
         throw error;

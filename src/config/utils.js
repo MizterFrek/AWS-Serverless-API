@@ -1,7 +1,16 @@
 const replaceLink = (url, replace) => {
-  return typeof url == 'string' 
-    ? String(url).replace(process.env.API_URL, dominio).replace(replace[0], replace[1]) 
-    : null;
+  if (typeof url !== 'string') {
+    return null
+  }
+
+  let route = url.replace(process.env.API_URL, dominio);
+
+  if (route.endsWith('/') ) {
+    route = route.slice(0, -1);
+  }
+
+  return route.replace(replace[0], replace[1]) 
+    
 }
 
 const getFormatDate = (date) => {
@@ -18,7 +27,7 @@ const isInvalid = (value) => {
  */
 const setDomain = (event) => {
   const host = event.headers.Host;
-  global.dominio = `https://${host}`;
+  global.dominio = `https://${host}/${process.env.STAGE}`;
 }
 
 module.exports = {

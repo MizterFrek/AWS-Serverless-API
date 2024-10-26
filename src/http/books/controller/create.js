@@ -14,7 +14,11 @@ const handler = async (event, _) => {
 
   const { nombre, autor, fechaPublicacion } = JSON.parse(event.body);
 
-  await bookModel.createNew(nombre, autor, fechaPublicacion);
+  await bookModel.createNew({ 
+    name: nombre, 
+    author: autor, 
+    published_at: fechaPublicacion 
+  });
 
   return res.created();
 }

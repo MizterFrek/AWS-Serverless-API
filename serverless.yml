@@ -8,6 +8,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     API_URL: ${file(env-${self:provider.stage}.json):external_api_url}
+    DB_TABLE: ${file(env-${self:provider.stage}.json):datatable_name}
+    STAGE: ${self:provider.stage}
   iam:
     role:
       statements:
@@ -52,7 +54,7 @@ resources:
     DynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${file(env-${self:provider.stage}.json):datatable_name}
+        TableName: ${self:provider.environment.DB_TABLE}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id

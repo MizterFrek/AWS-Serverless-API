@@ -17,7 +17,7 @@ const initDynamoDB = async () => {
     };
 };
 
-const createRow = async (TableName, data) => {
+const createRow = async (data, TableName = process.env.DB_TABLE) => {
 
     const timestamp = new Date().toISOString();
 
@@ -49,7 +49,7 @@ const scanTable = async (config) => {
 const searchOnColumn = async (TableName, column, value) => {
 
     const config = {
-        TableName: TableName,
+        TableName,
         ProjectionExpression: `#${column}`,
         FilterExpression: `#${column} = :${column}`,
         ExpressionAttributeNames: { [`#${column}`]: column },

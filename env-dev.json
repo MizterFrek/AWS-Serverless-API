@@ -2,5 +2,5 @@
   "project_name": "sls-project",
   "external_api_url": "https://swapi.py4e.com/api",
   "dynamo_db_arn": "*",
-  "datatable_name": "BooksTable"
+  "datatable_name": "books-table"
 }
