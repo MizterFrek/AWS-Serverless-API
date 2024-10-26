@@ -4,6 +4,9 @@ global.developer = 'MizterFrek';
 
 global.apiUrl = 'https://swapi.py4e.com/api';
 
+//TO FIX
+global.dominio = 'http://localhost:3000/dev'
+
 global.CONTENT_TYPE = 'application/json';
 
 /**
@@ -27,17 +30,19 @@ global.REGEX_SECURE_PASSWORD = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-
 global.HTTP_OK = 200;
 global.HTTP_CREATED = 201;
 global.HTTP_NOT_FOUND = 404;
+global.HTTP_VALIDATION_ERROR = 422;
 global.HTTP_INTERNAL_SERVER_ERROR = 500;
 
 global.MSG_200 = "Ok";
 global.MSG_201 = "Creación exitosa";
 global.MSG_404 = "Ruta no encontrada";
+global.MSG_422 = "Contenido no procesable";
 global.MSG_500 = "Error de Servidor";
 
 /**
  * Validations
  */
-
+global.INVALID_REQUIRED = `El campo :attr es requerido`
 global.INVALID_NUMBER = "El campo :attr debe ser un número";
 global.INVALID_NUMBER_LENGTH = "El campo :attr debe ser un número de :lgn dígitos";
 global.INVALID_MAX_LENGTH = "El campo :attr debe tener un máximo de :max caracteres";

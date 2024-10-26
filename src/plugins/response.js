@@ -25,11 +25,20 @@ const created = (data) => {
   })
 }
 
-const error = (message) => {
+const validationError = (message, errors = []) => {
+  return createResponse(HTTP_VALIDATION_ERROR, { 
+    status: HTTP_VALIDATION_ERROR,  
+    message: message || MSG_422,
+    errors,
+  });
+}
+
+const error = (message, errors = []) => {
+  console.log('errores', errors)
   return createResponse(HTTP_INTERNAL_SERVER_ERROR, { 
     status: HTTP_INTERNAL_SERVER_ERROR,  
     message: message || MSG_500,
-    data: null,
+    errors: errors.length ? JSON.stringify(errors) : [],
   });
 }
   
@@ -38,4 +47,5 @@ module.exports = {
     ok,
     created,
     error,
+    validationError,
 };

@@ -1,6 +1,6 @@
-'use strict';
+const { replaceLink } = require('../../../config/utils');
 
-const planet = (data) => {
+const planet = (data, replaces) => {
     return {
         nombre:             data.name,
         periodoDeRotacion:  data.rotation_period,
@@ -15,7 +15,7 @@ const planet = (data) => {
         peliculas:          data.films,
         creadoEn:           data.created,
         editadoEn:          data.edited,
-        enlace:             data.url
+        enlace:             replaceLink(data.url, replaces)
     };
 }
 
