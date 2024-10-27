@@ -133,18 +133,26 @@ components:
   schemas:
     LibroRequest:
       type: object
+      required:
+        - nombre
+        - autor
+        - fechaPublicacion
       properties:
         nombre:
           type: string
           description: "Título del Libro."
           example: "Tradiciones Peruanas"
+          minLength: 3
+          maxLength: 255
         autor:
           type: string
           description: "Autor del Libro."
           example: "Ricardo Palma"
+          minLength: 3
+          maxLength: 255
         fechaPublicacion:
           type: string
-          format: "YYYY-MM-DD"
+          format: date
           description: "Fecha de publicación del Libro."
           example: "1872-04-25"
     Libro:
