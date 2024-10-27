@@ -1,4 +1,10 @@
-# Serverless Framework | Node | AWS | DynamoDB
+# AWS-Serverless-API
+
+![Serverless](https://img.shields.io/badge/-serverless-C80A2D?style=flat-square&logo=serverless&logoColor=ffffff)
+![AWS](https://img.shields.io/badge/-AWS-0F79AF?style=flat-square&logo=amazon&logoColor=ffffff)
+![Nodejs](https://img.shields.io/badge/-Nodejs-339933?style=flat-square&logo=Node.js&logoColor=ffffff)
+![DynamoDB](https://img.shields.io/badge/-DynamoDB-4053D6?style=flat-square&logo=Amazon%20DynamoDB&logoColor=white)
+
 
 Este proyecto implementa una arquitectura de API utilizando **AWS Lambda** y **Amazon API Gateway** para gestionar solicitudes de usuarios y manejar operaciones con bases de datos y APIs externas.
 
@@ -36,6 +42,8 @@ Luego de desplegar el proyecto se puede agregar el ARN del DynamoDB creado en la
 | Mostrar Planeta    | GET    | `/planetas/{id}`   | Consume la API Starwars y muestra la información del planeta específico. | Ninguna                                   |
 | Listar Libros      | GET    | `/libros`          | Lista los libros creados por el usuario.                                 | Ninguna                                   |
 | Crear Libro        | POST   | `/libros`          | Crea un nuevo libro con la información proporcionada por el usuario.     | Aplica validación de datos                |
+
+### Para más información acerca de las APIs, puede consultar la [documentación](https://app.swaggerhub.com/apis-docs/JesusLlica/documentacion-aws_serverless_api/1.0.0) de las rutas realizada en swagger
 
 ## Funcionalidad General
 

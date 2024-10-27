@@ -1,0 +1,323 @@
+openapi: 3.0.3
+info:
+  title: Documentación AWS-Serverless-API
+  description: |-
+    Esta documentación brinda información detallada sobre el proyecto [AWS-Serverless-API](https://github.com/MizterFrek/AWS-Serverless-API) hecho por Jesus Llica García.
+  contact:
+    email: jllicagarcia9506@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Documentación de SWAPI 
+  url: https://swapi.py4e.com/api/
+tags:
+  - name: libros
+    description: Recursos que utilizan DynamoDB
+  - name: planetas
+    description: Recursos que utilizan SWAPI
+paths:
+  /libros:
+    get:
+      tags:
+        - libros
+      summary: Retorna la colección de libros creados
+      description: ''
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Libro'
+    post:
+      tags:
+        - libros
+      summary: Registra un libro en la base de datos
+      description: ''
+      requestBody:
+        required: true
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroRequest'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  codigo:
+                    type: integer
+                    format: "HTTP Status code"
+                    example: 201
+                  mensaje:
+                    type: string
+                    example: "Creación exitosa"
+        '422':
+          description: Error de Validación información
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  /planetas:
+    get:
+      tags:
+        - planetas
+      summary: Retorna la colección de planetas
+      description: ''
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: 'Número de página para paginar los resultados.'
+          schema:
+            type: integer
+            example: 2
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Collection'
+        '404':
+          description: "Se tuvo un error 404 en la petición API"
+  /planetas/{id}:
+    get:
+      tags:
+        - planetas
+      summary: Recuperar el planeta por su id
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: id
+          in: path
+          description: 'El planeta que se debea obtener.'
+          example: 1
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Planeta'          
+        '404':
+          description: "Se tuvo un error 404 en la petición API"
+components:
+  schemas:
+    LibroRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: "Título del Libro."
+          example: "Tradiciones Peruanas"
+        autor:
+          type: string
+          description: "Autor del Libro."
+          example: "Ricardo Palma"
+        fechaPublicacion:
+          type: string
+          format: "YYYY-MM-DD"
+          description: "Fecha de publicación del Libro."
+          example: "1872-04-25"
+    Libro:
+      type: object
+      properties:
+        id:
+          type: string
+          format: "uuid"
+          description: "Identificador único del registro."
+          example: "670d96d6-6049-47d9-88d4-4defc13e9606"
+        nombre:
+          type: string
+          description: "Título del Libro."
+          example: "Tradiciones Peruanas"
+        autor:
+          type: string
+          description: "Autor del Libro."
+          example: "Ricardo Palma"
+        fechaPublicacion:
+          type: string
+          format: "YYYY-MM-DD"
+          description: "Fecha de publicación del Libro."
+          example: "1872-04-25"
+        creadoEn:
+          type: string
+          format: "timestamp"
+          description: "El formato de fecha ISO 8601 del momento en que se creó este recurso."
+          example: "2022-10-26T17:47:10.489Z"
+        editadoEn:
+          type: string
+          format: "timestamp"
+          description: "El formato de fecha ISO 8601 del momento en que se editó este recurso."
+          example: "2023-08-12T10:04:19.602Z"
+    Planeta:
+      type: object
+      properties:
+        nombre: 
+          type: string
+          description: "El nombre de este planeta"
+          example: "Tatooine"
+        diametro:
+          type: string
+          example: "10465"
+          description: "El diámetro de este planeta en kilómetros."
+        periodoDeRotacion:
+          type: string
+          example: "23"
+          description: "El número de horas estándar que tarda este planeta en completar una sola rotación sobre su eje."
+        periodoOrbital: 
+          type: string
+          example: "304"
+          description: "El número de días estándar que tarda este planeta en completar una sola órbita alrededor de su estrella local."
+        gravedad:
+          type: string
+          example: "1 standard"
+          description: "Un número que denota la gravedad de este planeta, donde '1' es normal o 1 G estándar. '2' es el doble o 2 G estándar. '0,5' es la mitad o 0,5 G estándar."
+        poblacion:
+          type: string
+          example: "200000"
+          description: "La población promedio de seres sensibles que habitan este planeta."
+        clima:
+          type: string
+          example: "arid"
+          description: "El clima de este planeta. Separado por comas si es diverso."
+        terreno:
+          type: string
+          example: "desert"
+          description: "El terreno de este planeta. Separado por comas si es diverso."
+        aguaSuperficial:
+          type: string
+          example: "1"
+          description: "El porcentaje de la superficie del planeta que es agua o masas de agua de origen natural."
+        residentes:
+          type: array
+          items:
+            type: string
+            format: "url"
+            example: "https://swapi.py4e.com/api/people/1/"
+          description: "Una matriz de recursos URL de personas que viven en este planeta."
+        peliculas:
+          type: array
+          items:
+            type: string
+            format: "url"
+            example: "https://swapi.py4e.com/api/films/1/"
+          description: "Una matriz de recursos de URL de películas en las que ha aparecido este planeta."
+        enlace:
+          type: string
+          format: "url" 
+          example: "http://serverhost/stage/planetas/1/"
+          description: "la URL hipermedia de este recurso."
+        creadoEn:
+          type: string
+          format: "timestamp"
+          description: "El formato de fecha ISO 8601 del momento en que se creó este recurso."
+          example: "2022-10-26T17:47:10.489Z"
+        editadoEn:
+          type: string
+          format: "timestamp"
+          description: "El formato de fecha ISO 8601 del momento en que se editó este recurso."
+          example: "2023-08-12T10:04:19.602Z"
+      xml:
+        name: address
+    ApiResponse:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: "HTTP Status code"
+          example: 200
+        mensaje:
+          type: string
+          example: "Ok"
+        data:
+          description: "Contenido de la respuesta"
+    Collection:
+      type: object
+      properties:
+        total:
+          type: string
+          nullable: true
+          example: 20
+        pagina_siguiente:
+          type: string
+          format: "url"
+          example: "http://serverhost/stage/planetas?page=3"
+        pagina_anterior:
+          type: string
+          format: "url"
+          example: "http://serverhost/stage/planetas?page=2"
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/Planeta"
+      xml:
+        name: collection
+    ValidationError:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          format: "HTTP Status Code"
+          example: "422"
+        mensaje:
+          type: string
+          example: "Contenido no procesable"
+        errores:
+          type: object
+          properties:
+            nombreUnique:
+              type: string
+              example: "El campo nombre ya existe"
+            nombreRequired:
+              type: string
+              example: "El campo nombre es requerido"
+            nombreMaxLengthString:
+              type: string
+              example: "El campo nombre debe tener un máximo de 255 caracteres"
+            nombreMinLengthString:
+              type: string
+              example: "El campo nombre debe tener un mínimo de 3 caracteres"
+            autorRequired:
+              type: string
+              example: "El campo autor es requerido"
+            autorMaxLengthString:
+              type: string
+              example: "El campo autor debe tener un máximo de 255 caracteres"
+            autorMinLengthString:
+              type: string
+              example: "El campo autor debe tener un mínimo de 3 caracteres"
+            fechaPublicacionRequired:
+              type: string
+              example: "El campo fechaPublicacion es requerido"
+            fechaPublicacionDate:
+              type: string
+              example: "El campo fechaPublicacion debe tener siguiente formato de fecha: YYYY-MM-DD"
